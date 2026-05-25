@@ -1,24 +1,20 @@
-# `multiswc`: Instrumental variable methods for survival analysis
+# `multiswc`: Multi-regime marginal structural model for clinical trials analytics with treatment switching
 
+<div align="center">
 <img src="multiswc_crop.png" alt="surviv" width="180" height="180"/>
+</div>
 
-Instrumental variable methods for **time-to-event outcomes** under **unmeasured confounding**, with a focus on IV-based Cox model estimators under various real-world data setting.
+Estimate the causal effect of sustained treatment strategies on overall survival in clinical trials with possible treatment crossover and switch to subsequent therapy. Simulate faithful longitudinal clinical trials data with survival endpoints and multi-way treatment switches allowing for time-dependent prognostic factors.
 
 ---
 
 ## Installation
 
-Install the offical version of the package from CRAN and load it:
+Install the develop version of `multiswc` package on GitHub. CRAN version is forthcoming.
 
 ```r
-install.packages("surviv")
+remotes::install_github("tonyhbc/multiswc")
 library(surviv)
 ```
 
 ---
-
-## Analytic goal at a glance
-
-In many survival follow-up studies, treatment is confounded by factors that are not fully measured. **Instrumental variables (IVs)** can enable causal estimation and mitigate bias due to unmeasured confounding when a valid instrument exists (e.g., randomization, provider preference, site-level variation, policy/eligibility enactment), provided standard IV assumptions hold.
-
-This package collects several **IV estimators for Cox-type survival models**, spanning classic baseline IV estimators and time-varying designs for flexible real-world analytics.
