@@ -1,0 +1,36 @@
+Package: multiswc
+Type: Package
+Title: Multi-regime Marginal Structural Cox Model for Multi-way Treatment Switch in Oncology Clinical Trials with Survival Endpoint
+Version: 0.1.1
+Authors@R: c(
+    person(
+      "Haobin", "Chen",
+      email = "tony.haobin.chen@alumni.emory.edu",
+      role = c("aut", "cre")
+    ), 
+    person(
+      "Yuxuan", "Chen",
+      email = "yuxuan.chen@daiichisankyo.com",
+      role = c("aut")
+    ),
+    person(
+      "Philip", "He",
+      email = "philipyihe2018@gmail.com",
+      role = c("aut")
+    )
+  )
+Description: Estimate the causal effect of sustained treatment strategies on overall survival in  clinical trials with possible treatment crossover and switch to subsequent therapy. Simulate faithful longitudinal clinical trials data with survival endpoints and multi-way treatment switches allowing for time-dependent prognostic factors. For more on methodological background, please see: Keogh et al. (2021) <doi.org/10.1002/bimj.202000040> and Suarez et al. (2008) <doi.org/10.1016/j.jclinepi.2007.11.007>.
+License: MIT + file LICENSE
+Imports: 
+    nnet,
+    survival
+Encoding: UTF-8
+RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE, old_usage = TRUE)
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+URL: https://github.com/tonyhbc/multiswc
+BugReports: https://github.com/tonyhbc/multiswc/issues
+
