@@ -10,7 +10,7 @@ Estimate the causal effect of sustained treatment strategies on overall survival
 
 ## Installation
 
-Install the develop version of `multiswc` package on GitHub. CRAN version is forthcoming.
+Install the developer version of `multiswc` package on GitHub. CRAN version is forthcoming.
 
 ```r
 remotes::install_github("tonyhbc/multiswc")
