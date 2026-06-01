@@ -14,9 +14,9 @@
 
 The package implements a **multi-regime marginal structural Cox model** for the five treatment-regime states
 
-\[
+$$
 G(t) \in \{C, E, CE, CS, ES\},
-\]
+$$
 
 where:
 
