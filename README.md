@@ -353,65 +353,6 @@ After coarsening, `analysis_dat` can be passed to `multimsm()` if it contains th
 
 ---
 
-## Recommended analysis workflow
-
-A typical workflow for a real or simulated analysis is:
-
-```r
-library(multiswc)
-
-# 1. Start with long-format data or generate trial-like data.
-sim_obj <- simswc(
-  n = 300,
-  n_visit = 8,
-  base_cov = c("L1", "L3"),
-  trt_prob = 0.5,
-  param_tdcov = c(-1.5, 0.3, 0.3, -0.2, 0.5),
-  param_tdcov2 = c(0.05, 0.2, 0.2, -0.2, 0.7),
-  param_sw = c(-3, 0.4, 0.4, -0.3, 0.3, 0.8),
-  param_haz = c(0.1, log(0.8), log(1.1), log(1.1),
-                log(1.4), log(1.4), log(1.3), log(1), log(0.9)),
-  param_cens = NULL,
-  param_select = c(0, 0.5, 0.25),
-  lagk = TRUE,
-  true_hr = FALSE
-)
-
-# 2. Create the treatment-switching triplet.
-dat <- sim_obj$dat_long
-dat$rand <- stats::ave(dat$A, dat$id, FUN = function(x) rep(x[1], length(x)))
-dat$cross <- dat$S_CE
-dat$subseq <- pmax(dat$S_ES, dat$S_CS)
-
-# 3. Fit the multi-regime MSM.
-fit <- multimsm(
-  dat_long = dat,
-  id = "id",
-  tstart = "t.start",
-  tstop = "t.stop",
-  event = "event",
-  rand = "rand",
-  cross = "cross",
-  subseq = "subseq",
-  base_cov = c("L1", "L3"),
-  iptw_num = ~ regime_lag + factor(visit) + L1 + L3,
-  iptw_den = ~ regime_lag + factor(visit) + L1 + L3 + X + U + Alag1,
-  wt_trunc = 0.95
-)
-
-fit
-```
-
-For an applied analysis, spend time checking:
-
-- whether the treatment-history variables truly obey the one-switch assumption;
-- whether each regime has enough support over follow-up;
-- whether predicted regime probabilities are near zero for some histories;
-- whether weight truncation changes the estimate materially;
-- whether alternative numerator/denominator histories lead to similar conclusions.
-
----
-
 ## Interpretation of the fitted regimes
 
 The reference regime is sustained control (`C`). The estimated hazard ratios are interpreted relative to `C`:
@@ -427,30 +368,13 @@ The `regime.E` coefficient is usually the main causal contrast of interest. The 
 
 ---
 
-## Assumptions and current scope
-
-`multiswc` is intentionally focused. The current implementation assumes:
-
-- a two-arm baseline randomized trial or trial-like study;
-- start-stop survival follow-up;
-- at most one treatment switch per subject;
-- possible pathways `C`, `E`, `CE`, `CS`, and `ES`;
-- no control-to-experimental-to-subsequent sequential path in the same subject;
-- correctly measured switching history and relevant prognostic history;
-- sufficient support for the observed treatment regimes;
-- analyst-specified numerator and denominator models for stabilized weights.
-
-If the clinical setting allows multiple sequential switches, a richer regime state space is required. In that situation, the current five-state model should not be interpreted as capturing the full treatment process.
-
----
-
 ## Reporting suggestions
 
 When reporting an analysis with `multiswc`, we recommend including:
 
 1. the clinical definition of crossover and subsequent therapy;
 2. the visit grid or coarsening rule;
-3. the numerator and denominator weight-model formulas;
+3. the numerator and denominator IPTW model formulas;
 4. the final counts in `C`, `E`, `CE`, `CS`, and `ES`;
 5. weight summaries before and after truncation;
 6. the hazard ratio for `regime.E` as the primary contrast;
@@ -465,14 +389,6 @@ To cite `multiswc`, use:
 ```r
 citation("multiswc")
 ```
-
----
-
-## Bug reports and feature requests
-
-Please report bugs or request features at:
-
-<https://github.com/tonyhbc/multiswc/issues>
 
 ---
 
