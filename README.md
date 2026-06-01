@@ -15,7 +15,7 @@
 The package implements a **multi-regime marginal structural Cox model** for the five treatment-regime states
 
 $$
-G(t) \in \{C, E, CE, CS, ES\},
+G(t) \in \{C, E, CE, CS, ES\}
 $$
 
 where:
@@ -51,26 +51,12 @@ library(multiswc)
 
 ---
 
-## What problem does `multiswc` solve?
-
-A standard intention-to-treat survival analysis compares randomized arms regardless of what treatment patients actually receive later. That is often the right primary analysis for a treatment policy question, but it can be difficult to interpret when extensive crossover or subsequent therapy occurs after progression.
-
-A simple per-protocol analysis that censors patients at switching is also problematic, because switching is often related to prognosis. Patients may switch because their disease has progressed, toxicity has occurred, or the treating physician believes another therapy is clinically appropriate. Censoring them without adjustment can therefore create selection bias.
-
-`multiswc` addresses this by modeling treatment history as a time-varying categorical regime and using stabilized inverse probability weights to estimate a marginal structural Cox model. The workflow is deliberately compact:
-
-1. Use `simswc()` to simulate trial-like longitudinal survival data with three-way switching.
-2. Use `tcoarsen()` when real start-stop data need to be mapped to a regular visit grid.
-3. Use `multimsm()` to estimate the weighted multi-regime Cox model.
-
----
-
 ## Package functions at a glance
 
 | Function | Role in workflow | Typical use |
 |---|---|---|
-| `simswc()` | Simulation engine | Generate longitudinal clinical-trial-like survival data with baseline randomization, time-varying prognostic factors, and one-time switches to `CE`, `CS`, or `ES`. |
-| `tcoarsen()` | Preprocessing utility | Convert irregular start-stop follow-up records onto a coarsened visit grid before fitting the MSM. |
+| `simswc()` | Data simulator | Generate longitudinal survival data with baseline randomization, time-varying prognostic factors, and one-time switches to `CE`, `CS`, or `ES`. |
+| `tcoarsen()` | Data preprocessing | Convert irregular start-stop follow-up records onto a coarsened visit grid before fitting the MSM. |
 | `multimsm()` | Main estimator | Fit a stabilized inverse-probability-weighted multi-regime marginal structural Cox model. |
 
 ---
