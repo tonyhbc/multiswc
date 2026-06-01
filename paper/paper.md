@@ -41,13 +41,13 @@ Treatment switching is common in randomized trials with time-to-event outcomes, 
 
 A practical gap remains for contemporary trials in which switching is not a single binary event, a setting that has received growing attention only recently [@Gorrod2025; @Huang2026]. A control participant may remain on control (*C*), cross over to experimental therapy (*CE*), or switch to subsequent therapy (*CS*); an experimental participant may remain on experimental therapy (*E*) or switch to subsequent therapy (*ES*). Software for time-to-event analyses that explicitly represents these three switching pathways remains limited. For example, in the KEYNOTE-189 trial comparing pembrolizumab plus chemotherapy with placebo plus chemotherapy, patients assigned to placebo could cross over to pembrolizumab after verified progression, while subsequent anticancer therapies could also occur [@Gandhi2018]. `multiswc` addresses this gap by representing post-randomization treatment status as a time-varying categorical regime, $G(t) \in \{C,E,CE,CS,ES\}$, while preserving the primary sustained experimental-versus-control effect contrast.
 
-# State of the field
+# Methods for treatment switching
 
 Several R packages implement treatment-switching methods. `rpsftm` implements rank-preserving structural failure time models for two-arm trials with between-arm crossover [@Allison2017]. `ipcwswitch` implements artificial censoring at switch followed by IPCW survival analysis under a hypothetical setting in which patients remain on randomized treatment [@Graffeo2019]. `trtswitch` includes RPSFTM, iterative parameter estimation, IPCW, TSE, and an MSM for a single switching destination [@Lu2024]. These packages are valuable for standard switching analyses, but they are not designed to distinguish control-to-experimental crossover from control-to-subsequent and experimental-to-subsequent therapy pathways in one survival model.
 
 `multiswc` was built as a focused extension rather than a replacement for these tools. Its main contribution is a multi-regime parameterization for three-way switching, extending existing MSM formulations that use baseline randomization and a single post-randomization treatment process [@Yamaguchi2004; @Xu2022]. The design is related to marginal structural models for multiple treatment categories [@Suarez2008], but is tailored to randomized oncology trials in which crossover and subsequent therapy have different timing, clinical meanings, and interpretive roles. The target users are pharmaceutical statisticians, pharmacoepidemiologists, and health technology assessment analysts who need to report both a sustained no-switch treatment effect and contrasts for distinct post-switch regimes.
 
-# Software design
+# Design of `multiswc`
 
 The design of `multiswc` lets users supply switching histories through variables commonly collected in randomized trials. In `multimsm()`, `rand` identifies baseline randomized arm, `cross` identifies time-varying control-to-experimental crossover, and `subseq` identifies time-varying subsequent-therapy initiation. The function internally constructs the five-level regime and checks the assumed one-switch structure: control-arm participants may remain in `C`, transition to `CE`, or transition to `CS`, whereas experimental-arm participants may remain in `E` or transition to `ES`. Multiple sequential switches, such as control to experimental followed by subsequent therapy, require an expanded regime set and are not covered by the current implementation.
 
@@ -134,7 +134,7 @@ A `multimsm` object
 
 The printed object reports log hazard ratios, hazard ratios, 95% confidence intervals, p-values, final treatment-regime counts, and selected weight quantiles. The coefficient for `regime.E` is the primary no-switch experimental-versus-control effect. The returned object retains the fitted Cox model, fitted numerator and denominator regime models, augmented long-format data with derived weights, and diagnostics for sensitivity analyses.
 
-# Research impact statement
+# Research impact
 
 `multiswc` is available on CRAN as version 0.1.2 under an MIT license and can be installed through the standard R package ecosystem [@Chen2026]. The package provides an accessible implementation of multi-regime MSMs for complex treatment-switching settings arising in oncology trials and related comparative effectiveness studies.
 
@@ -142,7 +142,7 @@ The package is also designed for reproducible methods research. `simswc()` enabl
 
 # AI usage disclosure
 
-ChatGPT was used to assist with editing this JOSS paper. The scientific framing, software design choices, examples, and final manuscript content were completed and verified by the human authors, who remain responsible for the accuracy, originality, and compliance of all submitted materials.
+ChatGPT was used to assist with editing this JOSS paper to its appropriate format. The scientific framing, software design choices, examples, and final manuscript content were created and verified by the human authors, who remain responsible for the accuracy, originality, and compliance of all submitted materials.
 
 # Acknowledgements
 
